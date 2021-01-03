@@ -23,12 +23,16 @@ public class VehicleClientUtil {
         EntityRayTracer.instance().registerTransforms((EntityType<? extends VehicleEntity>) ModEntities.MAX_VAN.get(), (entityRayTracer, transforms, parts) ->
         {
             EntityRayTracer.createTransformListForPart(new ISpecialModel() {
-                @Override
-                public IBakedModel getModel() {
-                    return Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(ExampleMod.MOD_ID,"vehicle/max_van_body"));
-                }
-            }, parts, transforms);
+                                                           @Override
+                                                           public IBakedModel getModel() {
+                                                               return Minecraft.getInstance().getModelManager().getModel(new ResourceLocation(ExampleMod.MOD_ID,
+                                                                       "vehicle/max_van_body"));
+                                                           }
+                                                       }, parts, transforms,
+                    EntityRayTracer.MatrixTransformation.createScale(4F),
+                    EntityRayTracer.MatrixTransformation.createTranslation(0F, -0.08F, -1F));
             EntityRayTracer.createFuelPartTransforms((EntityType<? extends VehicleEntity>) ModEntities.MAX_VAN.get(), SpecialModels.FUEL_DOOR_CLOSED, parts, transforms);
+            EntityRayTracer.createKeyPortTransforms((EntityType<? extends VehicleEntity>) ModEntities.MAX_VAN.get(), parts, transforms);
         });
     }
     public static void registerVehicleRenderers()

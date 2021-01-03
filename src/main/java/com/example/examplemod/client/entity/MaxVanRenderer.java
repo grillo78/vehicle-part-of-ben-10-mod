@@ -10,6 +10,8 @@ import com.mrcrayfish.vehicle.common.ItemLookup;
 import com.mrcrayfish.vehicle.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
@@ -20,6 +22,7 @@ public class MaxVanRenderer extends AbstractRenderVehicle<MaxVanVehicle> {
 
     @Override
     public void render(MaxVanVehicle maxVanVehicle, MatrixStack matrixStack, IRenderTypeBuffer iRenderTypeBuffer, float partialTicks, int light) {
+        WorldRenderer.drawBoundingBox(matrixStack, iRenderTypeBuffer.getBuffer(RenderType.LINES), maxVanVehicle.getApplicableInteractionBoxes().get(0).getBox(), 1, 0, 0, 1);
         renderWheel(maxVanVehicle, matrixStack, iRenderTypeBuffer, true, 1.5F, -0.55F, -5.3F, 1.75F, partialTicks, light);
         renderWheel(maxVanVehicle, matrixStack, iRenderTypeBuffer, false, -1.5F, -0.55F, -5.3F, 1.75F, partialTicks, light);
 

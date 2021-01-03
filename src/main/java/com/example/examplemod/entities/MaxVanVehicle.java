@@ -12,6 +12,7 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -24,11 +25,11 @@ import java.util.Map;
 
 public class MaxVanVehicle extends LandVehicleEntity{
 
-    private static final RayTracePart TRAY_BOX = new RayTracePart(createScaledBoundingBox(-4 * 0.0625, 8 * 0.0625 + 0.1, -4.5 * 0.0625, 4 * 0.0625, 9F * 0.0625F + 0.1, -12.5 * 0.0625, 1.2));
+    private static RayTracePart CHEST_BOX = new RayTracePart(new AxisAlignedBB(-1.5, 0, -6.2, 1.5, 2, -5.2));
     private static final Map<RayTracePart, TriangleRayTraceList> interactionBoxMapStatic = DistExecutor.callWhenOn(Dist.CLIENT, () -> () ->
     {
         Map<RayTracePart, TriangleRayTraceList> map = new HashMap<>();
-        map.put(TRAY_BOX, EntityRayTracer.boxToTriangles(TRAY_BOX.getBox(), null));
+        map.put(CHEST_BOX, EntityRayTracer.boxToTriangles(CHEST_BOX.getBox(), null));
         return map;
     });
 
@@ -59,23 +60,16 @@ public class MaxVanVehicle extends LandVehicleEntity{
     @Override
     public List<RayTracePart> getApplicableInteractionBoxes() {
         ArrayList<RayTracePart> parts = new ArrayList();
-        parts.add(TRAY_BOX);
+        parts.add(CHEST_BOX);
         return parts;
     }
 
     @Override
     @OnlyIn(Dist.CLIENT)
-    public boolean processHit(RayTraceResultRotated result, boolean rightClick)
-    {
-        if (rightClick)
-        {
-            RayTracePart partHit = result.getPartHit();
-            if(partHit == TRAY_BOX)
-            {
-                System.out.println("test");
-                Minecraft.getInstance().player.trySleep(this.getPosition());
-                return true;
-            }
+    public boolean processHit(RayTraceResultRotated result, boolean rightClick) {
+        if (rightClick && result.getPartHit() == CHEST_BOX) {
+            //TODO sleep logic
+            return true;
         }
         return super.processHit(result, rightClick);
     }
